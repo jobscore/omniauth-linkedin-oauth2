@@ -48,7 +48,10 @@ module OmniAuth
       end
 
       def raw_info
-        @raw_info ||= access_token.get(profile_endpoint).parsed
+        @raw_info ||= begin
+          sleep 10
+          access_token.get(profile_endpoint).parsed
+        end
       end
 
       private
@@ -130,7 +133,7 @@ module OmniAuth
       def profile_endpoint
         "/v2/me?projection=(#{ fields.join(',') })"
       end
-      
+
       def token_params
         super.tap do |params|
           params.client_secret = options.client_secret
